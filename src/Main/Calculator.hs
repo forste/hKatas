@@ -20,7 +20,18 @@ import Data.List.Split
 
 add :: String -> Int
 add "" = 0
-add input = sum $ parse input
+add input = sum $ parse input defaultDelims
 
-parse :: String -> [Int]
-parse x =  map (\str -> read str) $ splitWhen (\c -> c == ',' || c == '\n') x
+defaultDelims = [',','\n']
+
+parse :: String -> [Char] -> [Int]
+parse ('/':'/':delimiter:xs) delims = parse' xs $ delimiter:delims
+parse x d =  parse' x d
+
+
+parse' x delims = map (\str -> read str)
+                    $ filter (\num -> not $ num == "")
+                    $ splitWhen (\c -> isDelim c delims) x
+            where
+                isDelim c list = or $ map (\delim -> delim == c) list
+
