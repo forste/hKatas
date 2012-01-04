@@ -19,7 +19,7 @@ module Main.Calculator (
 
 add :: String -> Int
 add "" = 0
-add _ = 1
+add input = read input
 
 
 
