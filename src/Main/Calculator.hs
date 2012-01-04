@@ -11,16 +11,31 @@
 -- |
 --
 -----------------------------------------------------------------------------
-
+{-# LANGUAGE DeriveDataTypeable #-}
 module Main.Calculator (
     add
+
+    ,NegativeNumberException
 ) where
 
 import Data.List.Split
+import Data.Typeable (Typeable)
+import Control.Exception (throw, Exception)
+
+data NegativeNumberException
+    = NegativeNumberException [Int]
+    deriving (Show, Typeable)
+
+instance Exception NegativeNumberException
 
 add :: String -> Int
 add "" = 0
-add input = sum $ parse input defaultDelims
+add input = case negative of
+                [] -> sum parsed
+                _ -> throw $ NegativeNumberException negative
+                where
+                negative = filter (\n -> n < 0) parsed
+                parsed = parse input defaultDelims
 
 defaultDelims = [',','\n']
 
