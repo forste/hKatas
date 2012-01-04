@@ -23,4 +23,4 @@ add "" = 0
 add input = sum $ parse input
 
 parse :: String -> [Int]
-parse x =  map (\str -> read str) $ splitWhen (\c -> c == ',') x
+parse x =  map (\str -> read str) $ splitWhen (\c -> c == ',' || c == '\n') x
