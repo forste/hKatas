@@ -16,10 +16,11 @@ module Main.Calculator (
     add
 ) where
 
+import Data.List.Split
 
 add :: String -> Int
 add "" = 0
-add input = read input
+add input = sum $ parse input
 
-
-
+parse :: String -> [Int]
+parse x =  map (\str -> read str) $ splitWhen (\c -> c == ',') x
