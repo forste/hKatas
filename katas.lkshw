@@ -1,0 +1,12 @@
+Version of workspace file format:
+               1
+Time of storage:
+               "Wed Jan  4 01:02:28 CET 2012"
+Name of the workspace:
+               "katas"
+File paths of contained packages:
+               ["stringcalculator/stringcalculator.cabal"]
+Maybe file path of an active package:
+               Just "stringcalculator/stringcalculator.cabal"
+Version Control System configurations for packages:
+               fromList []
