@@ -15,7 +15,7 @@
 module Main.Calculator (
     add
 
-    ,NegativeNumberException
+    ,NegativeNumberException (..)
 ) where
 
 import Data.List.Split
@@ -24,7 +24,7 @@ import Control.Exception (throw, Exception)
 
 data NegativeNumberException
     = NegativeNumberException [Int]
-    deriving (Show, Typeable)
+    deriving (Show, Typeable, Eq)
 
 instance Exception NegativeNumberException
 

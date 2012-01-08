@@ -6,7 +6,7 @@ license: AllRightsReserved
 license-file: ""
 copyright:
 maintainer:
-build-depends: base -any, HUnit -any, split -any
+build-depends: base -any, HUnit -any, split -any, testpack -any
 stability:
 homepage:
 package-url:
