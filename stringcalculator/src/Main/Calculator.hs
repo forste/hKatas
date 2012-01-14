@@ -39,16 +39,31 @@ add input = case negative of
                 negative = filter (\n -> n < 0) parsed
                 parsed = parse input defaultDelims
 
-defaultDelims = [',','\n']
+defaultDelims = [",","\n"]
 
-parse :: String -> [Char] -> [Int]
-parse ('/':'/':delimiter:xs) delims = parse' xs $ delimiter:delims
+parse :: String -> [String] -> [Int]
+parse ('/':'/':'[':xs) delims = parse'
+                                    (snd $ take' xs)
+                                    $ delims ++ [(fst $ take' xs)]
+parse ('/':'/':delimiter:xs) delims = parse' xs $ [delimiter]:delims
 parse x d =  parse' x d
+    where
 
 
+take' :: String -> (String,String)
+take' (']':xs) = ("",xs)
+take' (x:xs)   = (delim, rest)
+    where
+        rest     = snd take''
+        delim    = x:(fst take'')
+        take'' = take' xs
+
+
+parse' :: String -> [String] -> [Int]
 parse' x delims = map (\str -> read str)
                     $ filter (\num -> not $ num == "")
-                    $ splitWhen (\c -> isDelim c delims) x
-            where
-                isDelim c list = or $ map (\delim -> delim == c) list
+                    $ splitOn' x delims
 
+splitOn' :: String -> [String] -> [String]
+splitOn' x (del:delims) = concat $ map (\s -> splitOn del s) $ splitOn' x delims
+splitOn' x []          = [x]

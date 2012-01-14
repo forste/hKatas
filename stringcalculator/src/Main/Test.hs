@@ -69,15 +69,15 @@ addTests = [("",0)
             ,("2,5",7)
             ,("2,3,1,51,6,28,3,2",96)
             ,("45\n2,3\n1",51)
-            ,("//;\n1\n2", 3)
+            ,("//;\n1\n2", 3) -- 5
             ,("//;\n1;2", 3)
             ,("1033",33)
             ,("999,22",21)
             ,("//[**]\n1**2**3",6)
-            ,("//[}}}}]2}}}}5}}}}7",14)
+            ,("//[}}}}]2}}}}5}}}}7",14) --10
             ]
 nNTests :: [(String, Calc.NegativeNumberException)]
-nNTests =  [("-2,5", Calc.NegativeNumberException [-2])
+nNTests =  [("-2,5", Calc.NegativeNumberException [-2]) --11
            ,("-2,5,-3,-4", Calc.NegativeNumberException [-2,-3,-4])
            ,("45\n-2,3\n-1",Calc.NegativeNumberException [-2,-1])
            ]
