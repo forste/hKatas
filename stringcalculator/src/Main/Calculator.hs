@@ -33,7 +33,7 @@ instance Exception NegativeNumberException
 add :: String -> Int
 add "" = 0
 add input = case negative of
-                [] -> sum parsed
+                [] -> mod (sum parsed) 1000
                 _ -> throw $ NegativeNumberException negative
                 where
                 negative = filter (\n -> n < 0) parsed
