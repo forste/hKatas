@@ -71,6 +71,8 @@ addTests = [("",0)
             ,("45\n2,3\n1",51)
             ,("//;\n1\n2", 3)
             ,("//;\n1;2", 3)
+            ,("1033",33)
+            ,("999,22",21)
             ]
 nNTests :: [(String, Calc.NegativeNumberException)]
 nNTests =  [("-2,5", Calc.NegativeNumberException [-2])
