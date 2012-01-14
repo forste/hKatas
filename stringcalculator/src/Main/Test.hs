@@ -73,6 +73,8 @@ addTests = [("",0)
             ,("//;\n1;2", 3)
             ,("1033",33)
             ,("999,22",21)
+            ,("//[**]\n1**2**3",6)
+            ,("//[}}}}]2}}}}5}}}}7",14)
             ]
 nNTests :: [(String, Calc.NegativeNumberException)]
 nNTests =  [("-2,5", Calc.NegativeNumberException [-2])
