@@ -17,10 +17,10 @@ module Main.Test (
 ) where
 
 import Test.HUnit
-import Test.HUnit.Tools
+import qualified Test.HUnit.Tools as HUnit.Tools
 import Control.Monad
 import qualified Main.Calculator as Calc
-import Control.Exception (Exception)
+import Control.Exception (Exception, try)
 
 -- general tests
 
@@ -39,21 +39,20 @@ tester fnPrefix fn (input, expected) = return $ TestCase $ assertEqual
                                             $ fn input
 
 exceptionTester :: (Exception e, Eq e) => (String -> String)
-                                            -> (String -> IO Int)
+                                            -> (String -> Int)
                                             -> (String, e)
                                             -> IO Test
 exceptionTester fnPrefix fn (input, expectedException) = return $ TestCase $ assertRaises
                                                             (fnPrefix input)
                                                             expectedException
-                                                            $ fn input
+                                                            fn
+                                                            input
 
 addTester :: (String,Int) -> IO Test
 addTester = tester (\input -> "(add "++input++")") $ Calc.add
 
 nNTester :: (String, Calc.NegativeNumberException) -> IO Test
-nNTester = exceptionTester (\input -> "(add "++input++")") $ calcAddIO
-    where
-        calcAddIO input = return $ Calc.add input
+nNTester = exceptionTester (\input -> "(add "++input++")") $ Calc.add
 
 mkAddTests :: IO Test
 mkAddTests = do
@@ -76,7 +75,22 @@ addTests = [("",0)
 nNTests :: [(String, Calc.NegativeNumberException)]
 nNTests =  [("-2,5", Calc.NegativeNumberException [-2])
            ,("-2,5,-3,-4", Calc.NegativeNumberException [-2,-3,-4])
-           ,("45\n-2,3\n-1",Calc.NegativeNumberException [-2,-3])
+           ,("45\n-2,3\n-1",Calc.NegativeNumberException [-2,-1])
            ]
 
-
+--helper
+assertRaises :: (Control.Exception.Exception e, Show e, Eq e) =>
+                String -> e -> (String -> Int) -> String -> IO ()
+assertRaises msg selector action input = do
+           result <- calcAddIO input
+           r <- try $ putStrLn $ show result
+           case r of
+                  Left e -> do
+                    thetest e
+                  Right out ->
+                    assertFailure $ msg ++ "\nReceived '"++show out++"', but was expecting exception: " ++ (show selector)
+     where
+          calcAddIO input = return $ action input
+          thetest e = if e == selector then return ()
+                    else assertFailure $ msg ++ "\nReceived unexpected exception: "
+                             ++ (show e) ++ "\ninstead of exception: " ++ (show selector)

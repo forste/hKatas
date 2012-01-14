@@ -25,4 +25,4 @@ main = do
    tests <- Test.tests
    forM tests $ \test -> runVerboseTests test
 
---main = putStrLn $ show $ Calc.add "\n1\n2"
+--main = putStrLn $ show $ Calc.add "\n-2"

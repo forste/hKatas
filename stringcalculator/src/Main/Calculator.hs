@@ -28,6 +28,8 @@ data NegativeNumberException
 
 instance Exception NegativeNumberException
 
+
+
 add :: String -> Int
 add "" = 0
 add input = case negative of
